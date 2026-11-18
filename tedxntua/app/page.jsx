@@ -6,24 +6,40 @@ export default function Home() {
   const [selected, setSelected] = useState([])
 
   function checkboxHandler(opt) {
-    setSelected((s) => s.includes(opt) ? s.filter(i => i !== opt) : [...s, opt])
+    setSelected((s)=>{
+      if (s.includes(opt)) {
+        return s.filter(i => i !== opt)
+      }
+      if(s.length >=3) {
+        return s
+      }
+
+      return [...s, opt]
+    })
   }
 
-  
+
   return (
     <>
-      <main className="m-2">
-        <h2>Επιλέξτε θέμα για το TEDxNTUA 2027</h2>
-        <p>Selected: {selected.length}</p>
+      <main className="min-h-screen flex items-center justify-center p-4"><div className="w-full max-w-xl rounded-2xl bg-[oklch(57.7%_0.245_27.325)] p-8 shadow-xl">
+        <h2 className="text-xl font-bold">Επιλέξτε θέμα για το TEDxNTUA 2027 (εώς 3 επιλογές)</h2>
         <div className="flex flex-col p-2">
           {options.map((opt) => (
             <label key={opt}>
-              <input type="checkbox"  onChange={checkboxHandler} />
+              <input type="checkbox" checked={selected.includes(opt)} onChange={() => checkboxHandler(opt)} />
               <span className="pl-1">{opt}</span>
             </label>
           ))}
+          <br/>
+          <p className="mt-2 mb-3">Επιλεγμένα θέματα: {selected.length}</p>
+          <br/>
+          <div className="flex justify-center">
+            <button className="bg-black text-white py-2 px-6 w-fit hover:bg-[oklch(27.1%_0.105_12.094)] active:bg-[oklch(27.1%_0.105_12.094)] font-bold hover:scale-105 transition-all duration-300" type="button">
+              Submit
+            </button>
+          </div>
         </div>
-      </main>
-    </>
+      </div></main>
+    </> 
   );
 }
