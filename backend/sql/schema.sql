@@ -1,30 +1,32 @@
-CREATE DATABASE IF NOT EXISTS tedxntua_poll;
+DROP DATABASE IF EXISTS tedxntua_poll;
+CREATE DATABASE tedxntua_poll CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE tedxntua_poll;
 
-CREATE TABLE polls (
+-- Τα 5 θέματα
+CREATE TABLE themes (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  question VARCHAR(255) NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE options (
+-- Φάση 1: κάθε ψηφοφόρος διαλέγει 1 έως 3 θέματα
+CREATE TABLE votes_phase1 (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  poll_id INT NOT NULL,
-  text VARCHAR(255) NOT NULL,
-  FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE CASCADE
-);
-
-CREATE TABLE votes (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  poll_id INT NOT NULL,
-  option_id INT NOT NULL,
   voter_id VARCHAR(64) NOT NULL,
+  theme_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (poll_id) REFERENCES polls(id) ON DELETE CASCADE,
-  FOREIGN KEY (option_id) REFERENCES options(id) ON DELETE CASCADE,
-  UNIQUE (poll_id, voter_id)
+  FOREIGN KEY (theme_id) REFERENCES themes(id),
+  UNIQUE (voter_id, theme_id)      -- όχι το ίδιο θέμα δύο φορές
 );
 
-INSERT INTO polls (question) VALUES ('Ποιο θέμα θέλετε για το TEDxNTUA 2027;');
-INSERT INTO options (poll_id, text) VALUES (1,'Τεχνολογία'),(1,'Περιβάλλον'),(1,'Τέχνη');
+-- Φάση 2: κάθε ψηφοφόρος διαλέγει 1 θέμα
+CREATE TABLE votes_phase2 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  voter_id VARCHAR(64) NOT NULL UNIQUE,   -- μία ψήφος ανά ψηφοφόρο
+  theme_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (theme_id) REFERENCES themes(id)
+);
+
+-- Τα θέματα, ακριβώς όπως είναι γραμμένα στο frontend
+INSERT INTO themes (name) VALUES
+  ('Moires'), ('Anisotropia'), ('Reflect'), ('Cycle 0'), ('Synelixis');
