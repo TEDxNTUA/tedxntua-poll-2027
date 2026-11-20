@@ -1,9 +1,17 @@
 'use client'
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
   const options = ["Moires", "Anisotropia", "Reflect", "Cycle 0", "Synelixis"]
   const [selected, setSelected] = useState([])
+  const router = useRouter()
+
+  function handleSubmit() {
+    sessionStorage.setItem("selected", JSON.stringify(selected));
+    router.push("/waiting1_2");
+  }
 
   function checkboxHandler(opt) {
     setSelected((s)=>{
@@ -27,15 +35,15 @@ export default function Home() {
           {options.map((opt) => (
             <label key={opt}>
               <input type="checkbox" checked={selected.includes(opt)} onChange={() => checkboxHandler(opt)} />
-              <span className="pl-1">{opt}</span>
+              <span lang="en" className="pl-1">{opt}</span>
             </label>
           ))}
           <br/>
           <p className="mt-2 mb-3">Επιλεγμένα θέματα: {selected.length}</p>
           <br/>
           <div className="flex justify-center">
-            <button className="bg-black text-white py-2 px-6 w-fit hover:bg-[oklch(27.1%_0.105_12.094)] active:bg-[oklch(27.1%_0.105_12.094)] font-bold hover:scale-105 transition-all duration-300" type="button">
-              Submit
+            <button onClick={handleSubmit} className="bg-black text-white py-2 px-6 w-fit hover:bg-[oklch(27.1%_0.105_12.094)] active:bg-[oklch(27.1%_0.105_12.094)] font-bold hover:scale-105 transition-all duration-300" type="button">
+              <span lang="en">Submit</span>
             </button>
           </div>
         </div>

@@ -7,7 +7,7 @@ export default function Footer() {
             NTUA
             </p>
             <br/>
-            <p className="text-sm font-sans">
+            <p lang="en" className="text-sm font-sans">
             This independent TEDx event is operated under license from TED and the auspices of ICCS.
             </p>
             <br/>

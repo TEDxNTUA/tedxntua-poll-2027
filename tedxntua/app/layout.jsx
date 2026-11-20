@@ -10,12 +10,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-  <body className="bg-[url('/BG.png')] text-white">
-        <Header />
-        {children}
-        <Footer />
-        </body>
-    </html>
+    <html lang="el" className="bg-[url('/BG.png')] text-white">
+      <body className="bg-[url('/BG.png')] text-white">
+          <Header />
+          {children}
+          <Footer />
+          </body>
+      </html>
   );
 }
